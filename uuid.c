@@ -4,10 +4,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#define UUID_STRING_LENGTH 37
-
 uuid_t UUID_NIL = {0};
-
 
 int
 rand_bytes(unsigned char *out, size_t size)
@@ -43,16 +40,16 @@ uuid_generate_random(uuid_t out)
 }
 
 void
-uuid_unparse(uuid_t uu, char *out)
+uuid_unparse(uuid_t uu, uuid_string_t out)
 {
     uuid_unparse_upper(uu, out);
 }
 
 void
-uuid_unparse_upper(uuid_t uu, char *out)
+uuid_unparse_upper(uuid_t uu, uuid_string_t out)
 {
     snprintf(out,
-             UUID_STRING_LENGTH,
+             sizeof(uuid_string_t),
              "%02X%02X%02X%02X-"
              "%02X%02X-"
              "%02X%02X-"
@@ -66,10 +63,10 @@ uuid_unparse_upper(uuid_t uu, char *out)
 }
 
 void
-uuid_unparse_lower(uuid_t uu, char *out)
+uuid_unparse_lower(uuid_t uu, uuid_string_t out)
 {
     snprintf(out,
-             UUID_STRING_LENGTH,
+             sizeof(uuid_string_t),
              "%02x%02x%02x%02x-"
              "%02x%02x-"
              "%02x%02x-"
