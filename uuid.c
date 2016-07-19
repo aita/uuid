@@ -70,7 +70,7 @@ uuid_unparse_lower(uuid_t uu, char *out)
 {
     snprintf(out,
              UUID_STRING_LENGTH,
-             "%02x%02x02x%02x-"
+             "%02x%02x%02x%02x-"
              "%02x%02x-"
              "%02x%02x-"
              "%02x%02x-"
