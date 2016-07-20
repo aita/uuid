@@ -1,5 +1,6 @@
 #include "uuid.h"
 #include <stdio.h>
+#include <string.h>
 #include <sys/types.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -9,16 +10,22 @@ uuid_t UUID_NIL = {0};
 int
 rand_bytes(unsigned char *out, size_t size)
 {
-    int fd, err;
+    int fd, r;
 
     fd = open("/dev/urandom", O_RDONLY);
     if (fd == -1) {
         return -1;
     }
-    err = read(fd, out, size);
+    r = read(fd, out, size);
+    if (r < 0) {
+        return -1;
+    }
+    if (r != size) {
+        return -1;
+    }
     close(fd);
 
-    return err;
+    return 0;
 }
 
 void
@@ -30,7 +37,7 @@ uuid_generate(uuid_t out)
 void
 uuid_generate_random(uuid_t out)
 {
-    if (rand_bytes(out, sizeof(uuid_t) < 0)) {
+    if (rand_bytes(out, sizeof(uuid_t)) < 0) {
         memcpy(out, UUID_NIL, sizeof(uuid_t));
         return;
     }
